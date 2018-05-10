@@ -4,7 +4,7 @@ from math import log, fabs
 from multiprocessing import Pipe, Process
 
 
-EPS = 0.001
+EPS = 0.0000001
 
 
 def factorial(x):
@@ -20,9 +20,15 @@ def library_function(x):
 def summary_function(x):
     total_sum = 0
     n = 1
+    previous_x = 1
+    x_2 = x * x
     while True:
-        new_sum = total_sum + ((-1)**(n - 1))*(x**(2*n))/n
-        if abs(new_sum - total_sum) < EPS:
+        s = 1
+        if n % 2 == 0:
+            s = -1
+        previous_x = previous_x * x_2
+        new_sum = total_sum + (s * previous_x / n)
+        if (abs(new_sum - total_sum)) < EPS:
             break
         total_sum = new_sum
         n += 1
@@ -76,5 +82,7 @@ def main():
 
     proc.join()
 
+
 if __name__ == '__main__':
     main()
+
